@@ -19,11 +19,10 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date")
-    private String date;
+    //(yyyy-MM-dd HH:mm)
+    @Column(name = "dateandtime")
+    private String dateAndTime;
 
-    @Column(name = "time")
-    private String time;
 
     @Column(name = "temperature")
     private float temperature;

@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.*;
 import pz_project_restapi.temperature.exception.*;
 import pz_project_restapi.temperature.model.*;
 import pz_project_restapi.temperature.repository.*;
+import pz_project_restapi.temperature.service.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/v1/items")
+@RequestMapping("/api/pz/items")
+
 public class ItemController {
 
     @Autowired
     private ItemRepository itemRepository;
+
 
     @GetMapping
     public List<Item> getAllItems(){
@@ -28,7 +31,7 @@ public class ItemController {
         return itemRepository.save(item);
     }
 
-    //read item by id REST API
+    //build read item by id REST API
     @GetMapping("{id}")
     public ResponseEntity<Item> getItemById(@PathVariable long id) {
         Item item = itemRepository.findById(id)
@@ -42,8 +45,7 @@ public class ItemController {
         Item updateItem = itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Item not exist with id:" + id));
         updateItem.setTemperature(itemDetails.getTemperature());
-        updateItem.setDate(itemDetails.getDate());
-        updateItem.setTime(itemDetails.getTime());
+        updateItem.setDateAndTime(itemDetails.getDateAndTime());
 
         itemRepository.save(updateItem);
 
@@ -61,6 +63,9 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
+
+
+    //GET nejdelsi obdobi ve dnech
     
 
 
