@@ -3,7 +3,6 @@ package pz_project_restapi.temperature.service;
 import java.time.*;
 import java.time.format.*;
 import java.util.*;
-import org.springframework.format.annotation.*;
 import org.springframework.stereotype.*;
 import pz_project_restapi.temperature.model.*;
 import pz_project_restapi.temperature.repository.*;
@@ -22,11 +21,11 @@ public class ItemService implements IItemService{
 
     private List<Item> storageData = new ArrayList<>();
     private List<ItemLDT> storageLocalDateTime = new ArrayList<>();
-    private List<Edges> listOfTemperature = new ArrayList<>();
+    private TemperatureForm temperatureForm = new TemperatureForm();
 
 
-    //download all data for methods
-    public synchronized List<Item> getAllItemsFromDatabase(Long id){
+    //download and save all data from databases for methods longest period
+    public synchronized List<Item> getAllItemsFromDatabase(){
         List<Item> temporaryStorage = storage.findAll();
         for (Item item : temporaryStorage) {
             storageData.add(item);
@@ -35,7 +34,7 @@ public class ItemService implements IItemService{
     }
 
     //convert object Item String to object ItemLDT LocalDateTime
-    public static List<ItemLDT> convertToLocalDateTime(List<Item> item) {
+    public List<ItemLDT> convertToLocalDateTime(List<Item> item) {
         List<ItemLDT> temporaryStorageLocalDateTime = new ArrayList<>();
 
         for (int i = 0; i < item.size(); i++) {
@@ -58,7 +57,7 @@ public class ItemService implements IItemService{
     }
 
     //conveert object LocalDate to object String
-    public static List<Item> convertToString(List<ItemLDT> itemLDT) {
+    public List<Item> convertToString(List<ItemLDT> itemLDT) {
         List<Item> temporaryStringStorage = new ArrayList<>();
 
         for (int i = 0; i < itemLDT.size() ; i++) {
@@ -75,39 +74,21 @@ public class ItemService implements IItemService{
         return temporaryStringStorage;
     }
 
-    //method for longest period without temperature changes
 
+//    save temperatureEdges to the list
+    public TemperatureForm saveEdges(TemperatureForm newEdges) {
 
+        temperatureForm.setTemperatureA(newEdges.getTemperatureA());
+        temperatureForm.setTemperatureB(newEdges.getTemperatureB());
+
+        return temperatureForm;
+    }
     
-
-    //save temperatureEdges to the list
-    public void saveEdges(DetailForm newEdges) {
-        Edges addEdges = new Edges();
-        addEdges.setTemperatureA(newEdges.getTemperatureA());
-        addEdges.setTemperatureB(newEdges.getTemperatureB());
-        listOfTemperature.add(addEdges);
-    }
-
-
-
-//    public void saveEdges(DetailForm temperatureEdges) {
-//        Edges edges = clone(temperatureEdges);
-//        listOfTemperature.add(edges);
-//    }
-
-    private Edges clone (Edges origin) {
-        return new Edges((origin.getTemperatureA()), origin.getTemperatureB());
-    }
-
-
-
-
-
-
     //longest period in days, where temperature is between A and B
-    public static List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT,
-                                                           float temperatureA, float temperatureB) {
+    public List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT,
+                                                    float temperatureA, float temperatureB) {
         List<ItemLDT> periodByTemperature = new ArrayList<>();
+
         for (int i = 0; i < itemLDT.size(); i++) {
             float tempTemperature = itemLDT.get(i).getTemperatureLDT();
             if((tempTemperature >= temperatureA)&&
@@ -121,11 +102,9 @@ public class ItemService implements IItemService{
         return periodByTemperature;
     }
 
-
-
     //lond period in days, where tempereature is between A nad B and also
     // it was in interval between X and Y
-    public static List<ItemLDT> longestPeriodByTemperatureAndTime
+    public List<ItemLDT> longestPeriodByTemperatureAndTime
     (List<ItemLDT> itemLDT, float temperatureA, float temperatureB,
      LocalTime timeX, LocalTime timeY) {
 
@@ -146,6 +125,19 @@ public class ItemService implements IItemService{
             }
         }
         return periodByTemperatureTime;
+    }
+
+    //final GET longest period
+    public List<Item> getPeriod() {
+        List<Item> temporaryList = getAllItemsFromDatabase();
+        List<ItemLDT> temporaryListLDT = convertToLocalDateTime(temporaryList);
+        sortLocalDateTime(temporaryListLDT);
+        float A = temperatureForm.getTemperatureA();
+        float B = temperatureForm.getTemperatureB();
+
+        List<ItemLDT> periodListLDT = longestPeriodByTemperature(temporaryListLDT, A, B);
+        List<Item> periodList = convertToString(periodListLDT);
+        return periodList;
     }
     
 }

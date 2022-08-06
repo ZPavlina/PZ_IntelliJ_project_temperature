@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DetailForm {
+public class TemperatureForm {
 
     private float temperatureA;
     private float temperatureB;
