@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ItemLDT {
 
+    private Long id;
     private LocalDateTime localDateTime;
     private float temperatureLDT;
 

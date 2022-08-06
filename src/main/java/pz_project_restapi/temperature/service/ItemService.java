@@ -39,12 +39,13 @@ public class ItemService implements IItemService{
 
         for (int i = 0; i < item.size(); i++) {
             String s = item.get(i).getDateAndTime();
+            Long tempId = item.get(i).getId();
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime localDate = LocalDateTime.parse(s, formatter);
+            LocalDateTime localDateTime = LocalDateTime.parse(s, formatter);
 
             float f = item.get(i).getTemperature();
-            ItemLDT tempItemLDT = new ItemLDT(localDate, f);
+            ItemLDT tempItemLDT = new ItemLDT(tempId, localDateTime, f);
             temporaryStorageLocalDateTime.add(tempItemLDT);
         }
         return temporaryStorageLocalDateTime;
@@ -62,25 +63,33 @@ public class ItemService implements IItemService{
 
         for (int i = 0; i < itemLDT.size() ; i++) {
             LocalDateTime ldt = itemLDT.get(i).getLocalDateTime();
+            Long tempId = itemLDT.get(i).getId();
 
             DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
             String formattedDateTime = ldt.format(formatter);
 
             float f = itemLDT.get(i).getTemperatureLDT();
 
-            Item tempItem = new Item(formattedDateTime, f);
+            Item tempItem = new Item(tempId, formattedDateTime, f);
             temporaryStringStorage.add(tempItem);
         }
         return temporaryStringStorage;
     }
 
 
-//    save temperatureEdges to the list
-    public TemperatureForm saveEdges(TemperatureForm newEdges) {
-
+    // save temperatureEdges
+    public TemperatureForm saveTemperatureEdges(TemperatureForm newEdges) {
         temperatureForm.setTemperatureA(newEdges.getTemperatureA());
         temperatureForm.setTemperatureB(newEdges.getTemperatureB());
+        return temperatureForm;
+    }
 
+    //save temperature and time Edges
+
+    public TemperatureForm saveTemperatureAndTimeEdges(TemperatureForm newEdges) {
+        temperatureForm.setTemperatureA(newEdges.getTemperatureA());
+        temperatureForm.setTemperatureB(newEdges.getTemperatureB());
+        temperatureForm.setTime(newEdges.getTime());
         return temperatureForm;
     }
     
@@ -93,7 +102,7 @@ public class ItemService implements IItemService{
             float tempTemperature = itemLDT.get(i).getTemperatureLDT();
             if((tempTemperature >= temperatureA)&&
                     (tempTemperature <= temperatureB)) {
-                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getLocalDateTime(),
+                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getId(), itemLDT.get(i).getLocalDateTime(),
                         itemLDT.get(i).getTemperatureLDT());
                 periodByTemperature.add(tempItemLdt);
             } else {
@@ -118,7 +127,7 @@ public class ItemService implements IItemService{
             if(((tempTemperature >= temperatureA)&& (tempTemperature <= temperatureB)) &&
                     ((time.isAfter(timeX)) && (time.isBefore(timeY))))  {
 
-                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getLocalDateTime(),
+                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getId(), itemLDT.get(i).getLocalDateTime(),
                         itemLDT.get(i).getTemperatureLDT());
                 periodByTemperatureTime.add(tempItemLdt);
             } else {

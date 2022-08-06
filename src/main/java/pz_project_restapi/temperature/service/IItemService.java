@@ -15,7 +15,7 @@ public interface IItemService {
 
     List<Item> convertToString(List<ItemLDT> itemLDT)   ;
 
-    TemperatureForm saveEdges(TemperatureForm newEdges);
+    TemperatureForm saveTemperatureEdges(TemperatureForm newEdges);
 
     List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT, float temperatureA, float temperatureB);
 
