@@ -66,7 +66,7 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
-
+                                              
     // temperature edges for longest period
     @PostMapping("{detailForm}")
     public void saveTemperatureEdges(@RequestBody DetailForm detailForm) {

@@ -105,16 +105,47 @@ public class ItemService implements IItemService{
 
 
     //longest period in days, where temperature is between A and B
-       
-
+    public static List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT,
+                                                           float temperatureA, float temperatureB) {
+        List<ItemLDT> periodByTemperature = new ArrayList<>();
+        for (int i = 0; i < itemLDT.size(); i++) {
+            float tempTemperature = itemLDT.get(i).getTemperatureLDT();
+            if((tempTemperature >= temperatureA)&&
+                    (tempTemperature <= temperatureB)) {
+                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getLocalDateTime(),
+                        itemLDT.get(i).getTemperatureLDT());
+                periodByTemperature.add(tempItemLdt);
+            } else {
+            }
+        }
+        return periodByTemperature;
+    }
 
 
 
     //lond period in days, where tempereature is between A nad B and also
     // it was in interval between X and Y
+    public static List<ItemLDT> longestPeriodByTemperatureAndTime
+    (List<ItemLDT> itemLDT, float temperatureA, float temperatureB,
+     LocalTime timeX, LocalTime timeY) {
 
+        List<ItemLDT> periodByTemperatureTime = new ArrayList<>();
 
+        for (int i = 0; i < itemLDT.size(); i++) {
+            float tempTemperature = itemLDT.get(i).getTemperatureLDT();
+            LocalDateTime dateTime = itemLDT.get(i).getLocalDateTime();
+            LocalTime time = dateTime.toLocalTime();
 
+            if(((tempTemperature >= temperatureA)&& (tempTemperature <= temperatureB)) &&
+                    ((time.isAfter(timeX)) && (time.isBefore(timeY))))  {
 
-
+                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getLocalDateTime(),
+                        itemLDT.get(i).getTemperatureLDT());
+                periodByTemperatureTime.add(tempItemLdt);
+            } else {
+            }
+        }
+        return periodByTemperatureTime;
+    }
+    
 }
