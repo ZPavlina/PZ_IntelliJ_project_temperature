@@ -1,15 +1,14 @@
 package pz_project_restapi.temperature.model;
 
-import javax.persistence.*;
+import java.util.*;
 import lombok.*;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class DetailForm {
+public class Edges  {
 
     private float temperatureA;
     private float temperatureB;
-
 
 }

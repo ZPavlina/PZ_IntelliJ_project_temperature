@@ -2,6 +2,7 @@ package pz_project_restapi.temperature.controller;
 
 import java.util.*;
 import javax.net.ssl.*;
+import javax.swing.text.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ public class ItemController {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    private ItemService itemService;
 
 
     @GetMapping
@@ -62,6 +65,18 @@ public class ItemController {
         
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+
+    // temperature edges for longest period
+    @PostMapping("{detailForm}")
+    public void saveTemperatureEdges(@RequestBody DetailForm detailForm) {
+
+
+//        Edges newEdges = new Edges();
+//        newEdges.setTemperatureA(detailForm.getTemperatureA());
+//        newEdges.setTemperatureB(detailForm.getTemperatureB());
+
+        itemService.saveEdges(detailForm);        //itemService je null, nechapu proc?
     }
 
 

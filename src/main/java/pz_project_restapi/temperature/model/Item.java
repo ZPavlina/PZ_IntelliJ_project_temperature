@@ -27,4 +27,6 @@ public class Item {
     @Column(name = "temperature")
     private float temperature;
 
+    public Item(String formattedDateTime, float f) {
+    }
 }
