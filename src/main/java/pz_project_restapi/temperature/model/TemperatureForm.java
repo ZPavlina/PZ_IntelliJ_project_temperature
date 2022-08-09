@@ -10,7 +10,8 @@ public class TemperatureForm {
 
     private float temperatureA;
     private float temperatureB;
-    private String time;
+    private String timeX;
+    private String timeY;
 
 
 }

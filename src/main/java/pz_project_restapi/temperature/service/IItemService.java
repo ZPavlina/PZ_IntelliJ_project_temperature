@@ -19,8 +19,8 @@ public interface IItemService {
 
     List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT, float temperatureA, float temperatureB);
 
-    List<ItemLDT> longestPeriodByTemperatureAndTime(List<ItemLDT> itemLDT, float temperatureA,
-                                                    float temperatureB, LocalTime timeX, LocalTime timeY);
+//    List<ItemLDT> longestPeriodByTemperatureAndTime(List<ItemLDT> itemLDT, float temperatureA,
+//                                                    float temperatureB, LocalTime timeX, LocalTime timeY);
 
 
 

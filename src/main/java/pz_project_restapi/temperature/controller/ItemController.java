@@ -70,15 +70,20 @@ public class ItemController {
 
     //GET nejdelsi obdobi ve dnech mezi teplotami A a B
     @GetMapping("/period/{temperature}")
-    public List<Item> longestPeriod () {
-        return itemService.getPeriod();
+    public List<Item> longestPeriodT () {
+        return itemService.getPeriodT();
     }
 
     //temperature and time edges for longest period
-    @PostMapping("/form/{TemperatureTime}")
-    public TemperatureForm saveTemperatureAndTimeEdges(@RequestBody TemperatureForm temperatureForm) {
-         return itemService.saveTemperatureAndTimeEdges(temperatureForm);
-    }
+//    @PostMapping("/form/{TemperatureTime}")
+//    public TemperatureForm saveTemperatureAndTimeEdges(@RequestBody TemperatureForm temperatureForm) {
+//         return itemService.saveTemperatureAndTimeEdges(temperatureForm);
+//    }
+//
+//    @GetMapping("/period/temperature/{time}")
+//    public List<Item> longePeriodTT () {
+//        return itemService.getPeriodTT();
+//    }
 
 
 }
