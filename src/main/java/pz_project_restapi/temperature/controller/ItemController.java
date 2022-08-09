@@ -21,6 +21,9 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @GetMapping
     public List<Item> getAllItems(){
@@ -59,7 +62,6 @@ public class ItemController {
                 .orElseThrow(() -> new ResourceNotFoundException("Item not exist with id:" + id));
         itemRepository.delete(item);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
     }
                                               
     // temperature edges for longest period
@@ -85,6 +87,4 @@ public class ItemController {
     public List<Item> longePeriodTeTi () {
         return itemService.getPeriodTeTi();
     }
-
-
 }
