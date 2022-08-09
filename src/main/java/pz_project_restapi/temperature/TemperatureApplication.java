@@ -23,21 +23,5 @@ public class TemperatureApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-//
-//		Item item1 = new Item();
-//		item1.setTemperature(28.9f);
-//		item1.setDate("2022-04-01");
-//		item1.setTime("13:30");
-//		itemRepository.save(item1);
-//
-//		Item item2 = new Item();
-//		item2.setTemperature(28.9f);
-//		item2.setDate("2022-04-02");
-//		item2.setTime("7:30");
-//		itemRepository.save(item2);
-
-
-
-		
 	}
 }

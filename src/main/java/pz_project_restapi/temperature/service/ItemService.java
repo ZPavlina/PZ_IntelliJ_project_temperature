@@ -24,7 +24,7 @@ public class ItemService implements IItemService{
 
 
     //final GET longest period by temperature
-    public List<Item> getPeriodT() {
+    public List<Item> getPeriodTe() {
         List<Item> temporaryList = getAllItemsFromDatabase();
         List<ItemLDT> temporaryListLDT = convertToLocalDateTime(temporaryList);
         sortLocalDateTime(temporaryListLDT);
@@ -37,6 +37,21 @@ public class ItemService implements IItemService{
         return periodList;
     }
 
+//    GET longest period by termperature and time
+    public List<Item> getPeriodTeTi() {
+        List<Item> temporaryList = getAllItemsFromDatabase();
+        List<ItemLDT> temporaryListLDT = convertToLocalDateTime(temporaryList);
+        sortLocalDateTime(temporaryListLDT);
+        float A = temperatureForm.getTemperatureA();
+        float B = temperatureForm.getTemperatureB();
+        LocalTime X = convertToLocalTime(temperatureForm.getTimeX());
+        LocalTime Y = convertToLocalTime(temperatureForm.getTimeY());
+
+        List<ItemLDT> periodListLDT = longestPeriodByTemperatureAndTime(temporaryListLDT, A, B, X, Y);
+
+        List<Item> periodList = convertToString(periodListLDT);
+        return periodList;
+    }
 
     //download and save all data from databases for methods longest period
     public synchronized List<Item> getAllItemsFromDatabase(){
@@ -48,7 +63,7 @@ public class ItemService implements IItemService{
     }
 
     //convert object Item String to object ItemLDT LocalDateTime
-    public List<ItemLDT> convertToLocalDateTime(List<Item> item) {
+    private static List<ItemLDT> convertToLocalDateTime(List<Item> item) {
         List<ItemLDT> temporaryStorageLocalDateTime = new ArrayList<>();
 
         for (int i = 0; i < item.size(); i++) {
@@ -66,13 +81,13 @@ public class ItemService implements IItemService{
     }
 
     //sort List of object ItemLDT LocalDateTime
-    public List<ItemLDT> sortLocalDateTime(List<ItemLDT> itemLDT) {
+    private static List<ItemLDT> sortLocalDateTime(List<ItemLDT> itemLDT) {
         itemLDT.sort(Comparator.comparing(ItemLDT::getLocalDateTime));
         return itemLDT;
     }
 
     //conveert object LocalDate to object String
-    public List<Item> convertToString(List<ItemLDT> itemLDT) {
+    private static List<Item> convertToString(List<ItemLDT> itemLDT) {
         List<Item> temporaryStringStorage = new ArrayList<>();
 
         for (int i = 0; i < itemLDT.size() ; i++) {
@@ -90,7 +105,6 @@ public class ItemService implements IItemService{
         return temporaryStringStorage;
     }
 
-
     // save temperatureEdges
     public TemperatureForm saveTemperatureEdges(TemperatureForm newEdges) {
         temperatureForm.setTemperatureA(newEdges.getTemperatureA());
@@ -99,7 +113,6 @@ public class ItemService implements IItemService{
     }
 
     //save temperature and time Edges
-
     public TemperatureForm saveTemperatureAndTimeEdges(TemperatureForm newEdges) {
         temperatureForm.setTemperatureA(newEdges.getTemperatureA());
         temperatureForm.setTemperatureB(newEdges.getTemperatureB());
@@ -107,75 +120,19 @@ public class ItemService implements IItemService{
         temperatureForm.setTimeY(newEdges.getTimeY());
         return temperatureForm;
     }
-    
-    //longest period in days, where temperature is between A and B
-    public List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT,
-                                                    float temperatureA, float temperatureB) {
-        List<Integer> values = new ArrayList<>();
-
-        for (int i = 0; i < itemLDT.size(); i++) {
-            if (((itemLDT.get(i).getTemperatureLDT() >= temperatureA) &&
-                    (itemLDT.get(i).getTemperatureLDT() <= temperatureB))) {
-                values.add(1);
-            } else {
-                values.add(0);
-            }
-        }
-        List<Tuple> seqs = ItemService.longestEqualSeq(values);
-        int theCount = seqs.get(0).getLength();
-        int theIdx = seqs.get(0).getStart();
-        List<ItemLDT> finalPeriod = new ArrayList<>();
-
-        for (int i = theIdx; i < itemLDT.size(); i++) {
-            finalPeriod.add(new ItemLDT(itemLDT.get(i).getId(), itemLDT.get(i).getLocalDateTime(),
-                    itemLDT.get(i).getTemperatureLDT()));
-        }
-        List<ItemLDT> startEndPeriod = new ArrayList<>();
-        startEndPeriod.add(finalPeriod.get(0));
-        startEndPeriod.add(finalPeriod.get(finalPeriod.size()-1));
-         return startEndPeriod;
-
-    }
-
-    //lond period in days, where tempereature is between A nad B and also
-    // it was in interval between X and Y
-//    public List<ItemLDT> longestPeriodByTemperatureAndTime
-//    (List<ItemLDT> itemLDT, float temperatureA, float temperatureB,
-//     LocalTime timeX, LocalTime timeY) {
-//
-//
-//    }
 
     //convert String to LocalTime
-    public LocalTime convertToLocalTime (String time) {
+    private static LocalTime convertToLocalTime (String time) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime localTime = LocalTime.parse(time, dtf);
         return localTime;
     }
 
-    //GET longest period by termperature and time
-//    public List<Item> getPeriodTeTi() {
-//        List<Item> temporaryList = getAllItemsFromDatabase();
-//        List<ItemLDT> temporaryListLDT = convertToLocalDateTime(temporaryList);
-//        sortLocalDateTime(temporaryListLDT);
-//
-//        float A = temperatureForm.getTemperatureA();
-//        float B = temperatureForm.getTemperatureB();
-//        String x = temperatureForm.getTimeX();
-//        String y = temperatureForm.getTimeY();
-//        LocalTime timeX = convertToLocalTime(x);
-//        LocalTime timeY = convertToLocalTime(y);
-//
-//        List<ItemLDT> periodListLDT = longestPeriodByTemperatureAndTime(temporaryListLDT, A, B, timeX, timeY);
-//        List<Item> periodList = convertToString(periodListLDT);
-//        return periodList;
-//    }
-
-    public static List<Tuple> longestEqualSeq(List<Integer> values) {
-        int theCount = 0;   //number of the length of period
-        int theIdx = 0;     //index in list
-        int count = 1;      //variable for comparing
-        List<Tuple> out = new ArrayList<Tuple>(); //list for saving
+    private static List<Tuple> longestEqualSeq(List<Integer> values) {
+        int theCount = 0;
+        int theIdx = 0;
+        int count = 1;      
+        List<Tuple> out = new ArrayList<Tuple>();
 
         for (int i = 1; i < values.size(); i++) {
             if (values.get(i - 1).equals(1) && (values.get(i).equals(1))) {
@@ -196,36 +153,45 @@ public class ItemService implements IItemService{
             out.add(new Tuple(theIdx - (theCount - 1), theCount));
         }
         out.sort(Comparator.comparing(Tuple::getLength).reversed());
-
         return out;
     }
 
-
-}
-
-/*      public List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT,
+    //longest period in days, where temperature is between A and B
+    public List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT,
                                                     float temperatureA, float temperatureB) {
-        List<ItemLDT> periodByTemperature = new ArrayList<>();
+        List<Integer> values = new ArrayList<>();
 
         for (int i = 0; i < itemLDT.size(); i++) {
-            float tempTemperature = itemLDT.get(i).getTemperatureLDT();
-            if((tempTemperature >= temperatureA)&&
-                    (tempTemperature <= temperatureB)) {
-                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getId(), itemLDT.get(i).getLocalDateTime(),
-                        itemLDT.get(i).getTemperatureLDT());
-                periodByTemperature.add(tempItemLdt);
+            if (((itemLDT.get(i).getTemperatureLDT() >= temperatureA) &&
+                    (itemLDT.get(i).getTemperatureLDT() <= temperatureB))) {
+                values.add(1);
             } else {
+                values.add(0);
             }
         }
-        return periodByTemperature;
-    }
- */
+        List<Tuple> seqs = ItemService.longestEqualSeq(values);
+        int theCount = seqs.get(seqs.size()-1).getLength();
+        int theIdx = seqs.get(0).getStart();
+        List<ItemLDT> finalPeriod = new ArrayList<>();
 
-/*       public List<ItemLDT> longestPeriodByTemperatureAndTime
+        for (int i = theIdx; i < (theCount + theIdx); i++) {
+            finalPeriod.add(new ItemLDT(itemLDT.get(i).getId(), itemLDT.get(i).getLocalDateTime(),
+                    itemLDT.get(i).getTemperatureLDT()));
+        }
+        List<ItemLDT> startEndPeriod = new ArrayList<>();
+        startEndPeriod.add(finalPeriod.get(0));
+        startEndPeriod.add(finalPeriod.get(finalPeriod.size()-1));
+        return startEndPeriod;
+    }
+
+    //lond period in days, where tempereature is between A nad B and also
+    // it was in interval between X and Y
+    public List<ItemLDT> longestPeriodByTemperatureAndTime
     (List<ItemLDT> itemLDT, float temperatureA, float temperatureB,
      LocalTime timeX, LocalTime timeY) {
 
-     List<ItemLDT> periodByTemperatureTime = new ArrayList<>();
+        List<ItemLDT> periodByTemperatureTime = new ArrayList<>();
+        List<Integer> values = new ArrayList<>();
 
         for (int i = 0; i < itemLDT.size(); i++) {
             float tempTemperature = itemLDT.get(i).getTemperatureLDT();
@@ -236,12 +202,24 @@ public class ItemService implements IItemService{
                     ((time.equals(timeX) || time.isAfter(timeX)) &&
                             ((time.equals(timeY) || time.isBefore(timeY)))))  {
 
-                ItemLDT tempItemLdt = new ItemLDT(itemLDT.get(i).getId(), itemLDT.get(i).getLocalDateTime(),
-                        itemLDT.get(i).getTemperatureLDT());
-                periodByTemperatureTime.add(tempItemLdt);
+                values.add(1);
             } else {
+                values.add(0);
             }
         }
-        return periodByTemperatureTime;
+
+        List<Tuple> seqs = ItemService.longestEqualSeq(values);
+        int theCount = seqs.get(seqs.size()-1).getLength();
+        int theIdx = seqs.get(0).getStart();
+        List<ItemLDT> finalPeriod = new ArrayList<>();
+
+        for (int i = theIdx; i <= (theCount + theIdx); i++) {
+            finalPeriod.add(new ItemLDT(itemLDT.get(i).getId(), itemLDT.get(i).getLocalDateTime(),
+                    itemLDT.get(i).getTemperatureLDT()));
+        }
+        List<ItemLDT> startEndPeriod = new ArrayList<>();
+        startEndPeriod.add(finalPeriod.get(0));
+        startEndPeriod.add(finalPeriod.get(finalPeriod.size()-1));
+        return startEndPeriod;
     }
- */
+}

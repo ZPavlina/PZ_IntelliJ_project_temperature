@@ -63,27 +63,28 @@ public class ItemController {
     }
                                               
     // temperature edges for longest period
-    @PostMapping("{temperatureForm}")
+    @PostMapping("/form/temperature")
     public TemperatureForm saveTemperatureEdges(@RequestBody TemperatureForm temperatureForm) {
         return itemService.saveTemperatureEdges(temperatureForm);
     }
 
-    //GET nejdelsi obdobi ve dnech mezi teplotami A a B
+    //GET longest period in days between temperature A and B
     @GetMapping("/period/{temperature}")
-    public List<Item> longestPeriodT () {
-        return itemService.getPeriodT();
+    public List<Item> longestPeriodTe () {
+        return itemService.getPeriodTe();
     }
 
     //temperature and time edges for longest period
-//    @PostMapping("/form/{TemperatureTime}")
-//    public TemperatureForm saveTemperatureAndTimeEdges(@RequestBody TemperatureForm temperatureForm) {
-//         return itemService.saveTemperatureAndTimeEdges(temperatureForm);
-//    }
-//
-//    @GetMapping("/period/temperature/{time}")
-//    public List<Item> longePeriodTT () {
-//        return itemService.getPeriodTT();
-//    }
+    @PostMapping("/form/temperature/{time}")
+    public TemperatureForm saveTemperatureAndTimeEdges(@RequestBody TemperatureForm temperatureForm) {
+         return itemService.saveTemperatureAndTimeEdges(temperatureForm);
+    }
+
+    //GET longest period in days between temperature A and B and between XY time period
+    @GetMapping("/period/temperature/{time}")
+    public List<Item> longePeriodTeTi () {
+        return itemService.getPeriodTeTi();
+    }
 
 
 }
