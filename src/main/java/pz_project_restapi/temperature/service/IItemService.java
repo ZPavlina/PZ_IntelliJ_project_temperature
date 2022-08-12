@@ -9,9 +9,9 @@ public interface IItemService {
 
     List<Item> getAllItemsFromDatabase();
 
-    TemperatureForm saveTemperatureEdges(TemperatureForm newEdges);
+    TemperatureForm saveTemperatureLimits(TemperatureForm newLimits);
 
-    TemperatureForm saveTemperatureAndTimeEdges(TemperatureForm newEdges);
+    TemperatureForm saveTemperatureAndTimeLimits(TemperatureForm newLimits);
 
     List<ItemLDT> longestPeriodByTemperature(List<ItemLDT> itemLDT, float temperatureA, float temperatureB);
 
@@ -21,7 +21,6 @@ public interface IItemService {
     List<Item> getPeriodTe();
 
     public List<Item> getPeriodTeTi();
-
 
 
 

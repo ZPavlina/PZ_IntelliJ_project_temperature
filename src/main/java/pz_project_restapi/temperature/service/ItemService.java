@@ -93,19 +93,19 @@ public class ItemService implements IItemService{
         return temporaryStringStorage;
     }
 
-    // save temperatureEdges
-    public TemperatureForm saveTemperatureEdges(TemperatureForm newEdges) {
-        temperatureForm.setTemperatureA(newEdges.getTemperatureA());
-        temperatureForm.setTemperatureB(newEdges.getTemperatureB());
+    // save temperature limits
+    public TemperatureForm saveTemperatureLimits(TemperatureForm newLimits) {
+        temperatureForm.setTemperatureA(newLimits.getTemperatureA());
+        temperatureForm.setTemperatureB(newLimits.getTemperatureB());
         return temperatureForm;
     }
 
-    //save temperature and time Edges
-    public TemperatureForm saveTemperatureAndTimeEdges(TemperatureForm newEdges) {
-        temperatureForm.setTemperatureA(newEdges.getTemperatureA());
-        temperatureForm.setTemperatureB(newEdges.getTemperatureB());
-        temperatureForm.setTimeX(newEdges.getTimeX());
-        temperatureForm.setTimeY(newEdges.getTimeY());
+    //save temperature and time limits
+    public TemperatureForm saveTemperatureAndTimeLimits(TemperatureForm newLimits) {
+        temperatureForm.setTemperatureA(newLimits.getTemperatureA());
+        temperatureForm.setTemperatureB(newLimits.getTemperatureB());
+        temperatureForm.setTimeX(newLimits.getTimeX());
+        temperatureForm.setTimeY(newLimits.getTimeY());
         return temperatureForm;
     }
 

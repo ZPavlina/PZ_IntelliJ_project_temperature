@@ -66,8 +66,8 @@ public class ItemController {
                                               
     // temperature edges for longest period
     @PostMapping("/form/temperature")
-    public TemperatureForm saveTemperatureEdges(@RequestBody TemperatureForm temperatureForm) {
-        return itemService.saveTemperatureEdges(temperatureForm);
+    public TemperatureForm saveTemperatureLimits(@RequestBody TemperatureForm temperatureForm) {
+        return itemService.saveTemperatureLimits(temperatureForm);
     }
 
     //GET longest period in days between temperature A and B
@@ -78,8 +78,8 @@ public class ItemController {
 
     //temperature and time edges for longest period
     @PostMapping("/form/temperature/{time}")
-    public TemperatureForm saveTemperatureAndTimeEdges(@RequestBody TemperatureForm temperatureForm) {
-         return itemService.saveTemperatureAndTimeEdges(temperatureForm);
+    public TemperatureForm saveTemperatureAndTimeLimits(@RequestBody TemperatureForm temperatureForm) {
+         return itemService.saveTemperatureAndTimeLimits(temperatureForm);
     }
 
     //GET longest period in days between temperature A and B and between XY time period
